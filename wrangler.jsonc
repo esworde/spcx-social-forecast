@@ -1,0 +1,56 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "main": "./custom-worker.ts",
+  "name": "spcx-social-forecast",
+  "account_id": "65e25905d0ae991ac0903a48fef07af5",
+  "compatibility_date": "2026-06-16",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "spcx-social-forecast"
+    }
+  ],
+  "vars": {
+    "DATABASE_PROVIDER": "d1",
+    "MARKET_SYMBOL": "SPCX",
+    "MAX_FORECASTS": "100000",
+    "DIRECT_FORECAST_READ_LIMIT": "2000"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "spcx-forecast-db",
+      "database_id": "8991aaf3-12a6-41f0-aaa1-4eb39ef1e969"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "FORECAST_SNAPSHOTS",
+      "bucket_name": "spcx-forecast-snapshots"
+    }
+  ],
+  "ratelimits": [
+    {
+      "name": "FORECAST_SUBMISSIONS_LIMITER",
+      "namespace_id": "2026061601",
+      "simple": {
+        "limit": 10,
+        "period": 60
+      }
+    }
+  ],
+  "triggers": {
+    "crons": ["* * * * *", "0 */2 * * *"]
+  },
+  "routes": [
+    {
+      "pattern": "spcx.ardoedo.it",
+      "custom_domain": true
+    }
+  ]
+}

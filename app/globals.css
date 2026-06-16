@@ -1,0 +1,435 @@
+:root {
+  color-scheme: dark;
+  --bg: #202124;
+  --panel: #24262d;
+  --grid: #3b3f46;
+  --text: #f1f3f4;
+  --muted: #b8bcc2;
+  --soft: #8ab4f8;
+  --green: #81c995;
+  --green-strong: #5fce82;
+  --line: #9aa0a6;
+  --danger: #f28b82;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow-x: hidden;
+  overflow-y: auto;
+  min-height: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.app-shell {
+  width: min(1180px, calc(100vw - 32px));
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 12px;
+}
+
+.brand {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.logo-box {
+  display: grid;
+  place-items: center;
+  width: 128px;
+  height: 48px;
+  border-radius: 8px;
+  background: #f8f9fa;
+  padding: 8px;
+  overflow: hidden;
+}
+
+.ticker-logo {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(24px, 4vw, 52px);
+  line-height: 1;
+  font-weight: 650;
+}
+
+.subtitle {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 20px;
+}
+
+.quote-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin: 10px 0 8px;
+}
+
+.price {
+  font-size: clamp(42px, 7vw, 78px);
+  line-height: 0.95;
+  font-weight: 500;
+}
+
+.currency {
+  color: var(--muted);
+  font-size: 26px;
+}
+
+.gain {
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--green);
+  color: #111827;
+  font-size: 28px;
+  font-weight: 650;
+}
+
+.gain.loss {
+  background: var(--danger);
+}
+
+.daily-ohlc {
+  color: var(--muted);
+  font-size: 18px;
+  white-space: nowrap;
+}
+
+.chart-card {
+  width: 100%;
+}
+
+.draw-prompt {
+  margin: 6px 0 0;
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 650;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: minmax(180px, 260px) auto auto 1fr;
+  gap: 10px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.input,
+.search {
+  min-height: 42px;
+  border: 1px solid #4d5158;
+  border-radius: 6px;
+  background: #17191f;
+  color: var(--text);
+  padding: 0 12px;
+}
+
+.button {
+  min-height: 42px;
+  border: 0;
+  border-radius: 6px;
+  padding: 0 16px;
+  color: #111827;
+  background: var(--soft);
+  cursor: pointer;
+  font-weight: 650;
+}
+
+.button.secondary {
+  color: var(--text);
+  background: #383c44;
+}
+
+.button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.message {
+  color: var(--muted);
+  min-height: 22px;
+}
+
+.message.error {
+  color: var(--danger);
+}
+
+.headline {
+  margin-top: 8px;
+  color: var(--text);
+  font-size: 22px;
+  font-weight: 650;
+}
+
+@media (max-width: 760px) {
+  .app-shell {
+    width: min(100vw - 20px, 680px);
+    padding-top: 20px;
+  }
+
+  .topbar,
+  .brand {
+    align-items: flex-start;
+  }
+
+  .logo-box {
+    width: 108px;
+    height: 42px;
+    padding: 7px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+  }
+
+  .gain,
+  .currency {
+    font-size: 20px;
+  }
+
+  .daily-ohlc {
+    font-size: 15px;
+  }
+
+  .controls {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chart-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1000 / 420;
+  overflow: hidden;
+  touch-action: none;
+  flex: 0 0 auto;
+  min-height: 0;
+}
+
+.crowd-density-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.forecast-chart {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+  user-select: none;
+}
+
+.grid-line {
+  stroke: var(--grid);
+  stroke-width: 1;
+}
+
+.today-line {
+  stroke: #747982;
+  stroke-width: 1;
+  stroke-dasharray: 5 7;
+}
+
+.month-line {
+  stroke: #636872;
+  stroke-width: 1;
+  stroke-dasharray: 3 9;
+  opacity: 0.42;
+}
+
+.month-label {
+  fill: var(--muted);
+  font-size: 14px;
+  text-anchor: middle;
+  opacity: 0.72;
+}
+
+.future-zone {
+  fill: rgba(138, 180, 248, 0.045);
+}
+
+.history-line {
+  fill: none;
+  stroke: var(--green);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.forecast-line {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: var(--crowd-opacity, 0.16);
+}
+
+.forecast-line.active {
+  stroke: var(--soft);
+  stroke-width: 4;
+  opacity: 1;
+}
+
+.draw-line {
+  fill: none;
+  stroke: var(--soft);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 8 8;
+}
+
+.end-dot {
+  fill: var(--soft);
+}
+
+.axis-label,
+.price-label {
+  fill: var(--muted);
+  font-size: 18px;
+}
+
+.search-row {
+  margin-top: 8px;
+  grid-template-columns: minmax(180px, 260px) auto 1fr;
+}
+
+.scale-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+  color: var(--muted);
+}
+
+.scale-label {
+  font-weight: 650;
+  color: var(--text);
+}
+
+.scale-field {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.scale-input {
+  width: 88px;
+  min-height: 34px;
+  border: 1px solid #4d5158;
+  border-radius: 6px;
+  background: #17191f;
+  color: var(--text);
+  padding: 0 8px;
+}
+
+.scale-reset {
+  min-height: 34px;
+  border: 0;
+  border-radius: 6px;
+  padding: 0 10px;
+  background: #383c44;
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 650;
+}
+
+@media (max-width: 760px) {
+  html,
+  body {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .app-shell {
+    min-height: 100dvh;
+    padding: 8px 0;
+  }
+
+  .forecast-chart {
+    min-height: 0;
+  }
+
+  .chart-wrap {
+    flex: 0 0 270px;
+    height: 270px;
+    min-height: 270px;
+    aspect-ratio: auto;
+  }
+
+  .axis-label,
+  .price-label {
+    font-size: 15px;
+  }
+
+  .search-row {
+    grid-template-columns: 1fr;
+  }
+
+  .controls {
+    gap: 6px;
+    margin-top: 6px;
+  }
+
+  .draw-prompt {
+    margin-top: 4px;
+    font-size: 15px;
+  }
+
+  .scale-row {
+    gap: 5px;
+    margin-top: 4px;
+  }
+
+  .input,
+  .search,
+  .button {
+    min-height: 38px;
+  }
+
+  .scale-input {
+    width: 78px;
+    min-height: 30px;
+  }
+
+  .scale-reset {
+    min-height: 30px;
+  }
+}

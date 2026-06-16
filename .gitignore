@@ -1,0 +1,14 @@
+.superpowers/
+docs/superpowers/
+.wrangler/
+node_modules/
+.next/
+.open-next/
+dist/
+build/
+data/
+.env
+.env.local
+*.log
+*.swp
+*.tsbuildinfo
